@@ -1,0 +1,23 @@
+# Maven target build folder
+target/
+*.class
+
+# Test output & reports
+test-output/
+surefire-reports/
+*.log
+
+# Keep bug evidence screenshots, ignore transient test failure captures
+screenshots/*.png
+!screenshots/problem_user_bugs/
+
+# Environment & local files
+.env
+.env.local
+
+# IDE & OS
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
