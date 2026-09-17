@@ -1,0 +1,28 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SauceDemo QA Suite" parallel="none" verbose="2">
+
+    <test name="Task 1 - Sanity Tests">
+        <classes>
+            <class name="com.saucedemo.tests.SanityTest"/>
+        </classes>
+    </test>
+
+    <test name="Task 2 - Login Flow Tests">
+        <classes>
+            <class name="com.saucedemo.tests.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Task 3 - E2E Purchase Flow">
+        <classes>
+            <class name="com.saucedemo.tests.PurchaseE2ETest"/>
+        </classes>
+    </test>
+
+    <test name="Task 5 - ReqRes API Tests">
+        <classes>
+            <class name="com.saucedemo.tests.ReqResApiTest"/>
+        </classes>
+    </test>
+
+</suite>
