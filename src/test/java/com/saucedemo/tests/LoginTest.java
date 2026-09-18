@@ -24,4 +24,43 @@ public class LoginTest extends BaseTest {
         Assert.assertTrue(productsPage.getProductCount() > 0,
                 "Product inventory is empty");
     }
+
+    @Test(description = "Negative: Login with invalid credentials displays error message")
+    public void testInvalidCredentials() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.login(TestData.INVALID_USERNAME, TestData.INVALID_PASSWORD);
+
+        Assert.assertTrue(loginPage.isErrorDisplayed(),
+                "Error banner is not displayed");
+        Assert.assertEquals(loginPage.getErrorMessage(), TestData.ERR_CREDENTIALS_MISMATCH,
+                "Error message does not match expected credentials mismatch error");
+    }
+
+    @Test(description = "Negative: Login with empty username displays required error")
+    public void testEmptyUsername() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.login("", TestData.VALID_PASSWORD);
+
+        Assert.assertTrue(loginPage.isErrorDisplayed(),
+                "Error banner is not displayed");
+        Assert.assertEquals(loginPage.getErrorMessage(), TestData.ERR_USERNAME_REQUIRED,
+                "Error message does not match expected username required error");
+    }
+
+    @Test(description = "Negative: Login with empty password displays required error")
+    public void testEmptyPassword() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.login(TestData.STANDARD_USER, "");
+
+        Assert.assertTrue(loginPage.isErrorDisplayed(),
+                "Error banner is not displayed");
+        Assert.assertEquals(loginPage.getErrorMessage(), TestData.ERR_PASSWORD_REQUIRED,
+                "Error message does not match expected password required error");
+    }
 }
