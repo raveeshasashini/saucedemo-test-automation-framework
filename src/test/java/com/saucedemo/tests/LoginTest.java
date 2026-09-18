@@ -7,6 +7,11 @@ import com.saucedemo.pages.ProductsPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+/**
+ * Task 2: Login & Logout Test Suite
+ * Covers positive, negative, edge-case authentication scenarios,
+ * and user session termination (logout).
+ */
 public class LoginTest extends BaseTest {
 
     @Test(description = "Positive: Valid login with standard_user redirects to inventory page")
@@ -62,5 +67,34 @@ public class LoginTest extends BaseTest {
                 "Error banner is not displayed");
         Assert.assertEquals(loginPage.getErrorMessage(), TestData.ERR_PASSWORD_REQUIRED,
                 "Error message does not match expected password required error");
+    }
+
+    @Test(description = "Negative: Locked-out user displays locked out error message")
+    public void testLockedOutUser() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        loginPage.login(TestData.LOCKED_OUT_USER, TestData.VALID_PASSWORD);
+
+        Assert.assertTrue(loginPage.isErrorDisplayed(),
+                "Error banner is not displayed");
+        Assert.assertEquals(loginPage.getErrorMessage(), TestData.ERR_LOCKED_OUT,
+                "Error message does not match expected locked-out error");
+    }
+
+    @Test(description = "Positive: User can successfully log out and return to the login page")
+    public void testLogout() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+
+        ProductsPage productsPage = loginPage.login(TestData.STANDARD_USER, TestData.VALID_PASSWORD);
+        productsPage.waitForPageLoaded();
+
+        LoginPage loggedOutPage = productsPage.logout();
+
+        Assert.assertTrue(loggedOutPage.isLoginButtonDisplayed(),
+                "Login button is not displayed after logout");
+        Assert.assertEquals(loggedOutPage.getCurrentUrl(), Config.BASE_URL + "/",
+                "User was not redirected back to login page");
     }
 }
