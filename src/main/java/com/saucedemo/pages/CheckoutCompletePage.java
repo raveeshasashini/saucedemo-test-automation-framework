@@ -21,6 +21,12 @@ public class CheckoutCompletePage extends BasePage {
 
     // ── Actions & Queries ───────────────────────────────────────────────────
 
+    /** Wait for the checkout complete page to be fully loaded. */
+    public void waitForPageLoaded() {
+        waitForUrlContains("checkout-complete.html");
+        findVisible(completeHeader);
+    }
+
     public String getConfirmationHeader() {
         return getText(completeHeader);
     }

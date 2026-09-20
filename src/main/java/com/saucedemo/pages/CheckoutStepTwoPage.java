@@ -29,8 +29,14 @@ public class CheckoutStepTwoPage extends BasePage {
 
     // ── Actions & Queries ───────────────────────────────────────────────────
 
+    /** Wait for the checkout overview page to be fully loaded. */
+    public void waitForPageLoaded() {
+        waitForUrlContains("checkout-step-two.html");
+        findVisible(subtotalLabel);
+    }
+
     public List<String> getItemNames() {
-        List<WebElement> elements = findAll(itemName);
+        List<WebElement> elements = findAllVisible(itemName);
         List<String> names = new ArrayList<>();
         for (WebElement el : elements) {
             names.add(el.getText().trim());
@@ -39,7 +45,7 @@ public class CheckoutStepTwoPage extends BasePage {
     }
 
     public int getItemCount() {
-        return findAll(cartItems).size();
+        return findAllVisible(cartItems).size();
     }
 
     public String getSubtotalText() {

@@ -1,6 +1,6 @@
 # SauceDemo QA Automation Framework (Selenium WebDriver & Java)
 
-> Enterprise-grade automated End-to-End (UI) and REST API test framework for [SauceDemo](https://www.saucedemo.com), engineered using **Java 17**, **Selenium WebDriver 4.29**, **TestNG 7.10**, **Maven**, and **REST Assured 5.5** adhering to the **Page Object Model (POM)** design pattern.
+> Enterprise-grade automated End-to-End (UI) and REST API test framework for [SauceDemo](https://www.saucedemo.com), engineered using **Java 17**, **Selenium WebDriver 4.29**, **TestNG 7.10**, **Maven**, and **Postman** adhering to the **Page Object Model (POM)** design pattern.
 
 ---
 
@@ -11,7 +11,7 @@ For this QA automation assignment, I chose **Selenium WebDriver with Java, TestN
 2. **Page Object Model (POM)**: Enforces strict separation between web element locators, user actions, and test assertions. When UI layouts or DOM selectors change, updates are confined to a single Page Object class without altering test logic.
 3. **Robust TestNG Engine**: TestNG provides fine-grained test management, flexible suite execution via `testng.xml`, descriptive `@Test` annotations, priority ordering, assertions, and built-in HTML/XML Surefire reporting.
 4. **Decoupled Test Data & Configuration**: All target URLs, timeouts, headless toggles, credentials, error message constants, and product fixtures are centralized in `Config.java` and `TestData.java`, eliminating hardcoded magic strings.
-5. **REST Assured Integration**: Integrated for robust REST API testing against `https://reqres.in`, validating HTTP status codes, headers, response schemas, and payload bodies.
+5. **Postman API Test Suite**: Comprehensive automated API test collection and environment for `https://reqres.in`, validating HTTP status codes, headers, response schemas, and payload bodies with automated JavaScript test scripts.
 6. **Automatic Defect Evidence**: Integrated screenshot utility (`ScreenshotUtil.java`) that automatically captures timestamped browser screenshots upon test failure.
 
 ---
@@ -26,6 +26,9 @@ saucedemo-qa-automation/
 ├── pom.xml                              # Maven build file with dependencies & plugins
 ├── testng.xml                           # TestNG test suite runner configuration
 ├── BUG_REPORT.md                        # Task 4: Problem_user defect report with screenshots
+├── postman/                             # Task 5 (Bonus A): Postman API test collection & environment
+│   ├── ReqRes_API_Tests.postman_collection.json
+│   └── ReqRes_API_Environment.postman_environment.json
 ├── screenshots/
 │   └── problem_user_bugs/               # Defect evidence screenshots for BUG_REPORT.md
 │       ├── BUG-01_dog_images_inventory.png
@@ -54,8 +57,7 @@ saucedemo-qa-automation/
 │       ├── BaseTest.java                # Test lifecycle & automatic failure screenshot
 │       ├── SanityTest.java              # Task 1: Environment sanity / smoke test
 │       ├── LoginTest.java               # Task 2: Comprehensive login & logout suite
-│       ├── PurchaseE2ETest.java         # Task 3: Full E2E purchase flow & calculations
-│       └── ReqResApiTest.java           # Task 5 (Bonus A): REST Assured API tests
+│       └── PurchaseE2ETest.java         # Task 3: Full E2E purchase flow & calculations
 └── README.md                            # Complete setup and execution documentation
 ```
 
@@ -66,6 +68,7 @@ saucedemo-qa-automation/
 - **Java Development Kit (JDK)**: JDK 17 or higher (`java -version`)
 - **Apache Maven**: 3.8.x or 3.9.x (`mvn -version`)
 - **Google Chrome**: Latest stable version installed locally
+- **Postman**: Desktop app or Newman CLI (for running API tests)
 - **IDE (Recommended)**: IntelliJ IDEA (Community or Ultimate Edition)
 
 ---
@@ -94,7 +97,7 @@ If you or your team use **IntelliJ IDEA**, follow these exact steps for a 1-clic
 ### Step 3: Sync Maven Dependencies
 1. Open the **Maven Tool Window** on the right sidebar (or `View` ➔ `Tool Windows` ➔ `Maven`).
 2. Click the **Reload All Maven Projects** button (🔄 circular arrows at the top-left of the Maven pane).
-3. IntelliJ will automatically resolve and index all dependencies (Selenium 4.29, TestNG 7.10, REST Assured 5.5, Jackson, SLF4J).
+3. IntelliJ will automatically resolve and index all dependencies (Selenium 4.29, TestNG 7.10, SLF4J).
 
 ### Step 4: Running Tests in IntelliJ (3 Easy Ways)
 
@@ -108,7 +111,6 @@ If you or your team use **IntelliJ IDEA**, follow these exact steps for a 1-clic
    - `SanityTest.java` — Task 1: Environment sanity / smoke test
    - `LoginTest.java` — Task 2: Authentication & logout suite
    - `PurchaseE2ETest.java` — Task 3: Full end-to-end checkout & tax calculation flow
-   - `ReqResApiTest.java` — Task 5 (Bonus): REST Assured API tests
 2. Click the green **Play (▶)** gutter icon:
    - Next to the **Class name** to run all tests in that class.
    - Next to any **individual `@Test` method** to run just that single test scenario.
@@ -144,7 +146,7 @@ If you prefer executing from the terminal (Windows PowerShell, CMD, macOS, or Li
 mvn clean compile test-compile
 ```
 
-### 2. Run Full Test Suite (All Tasks via TestNG)
+### 2. Run Full Test Suite (All UI Tasks via TestNG)
 ```bash
 mvn clean test
 ```
@@ -159,9 +161,6 @@ mvn test -Dtest=LoginTest
 
 # Task 3: End-to-End Purchase Flow & Calculations
 mvn test -Dtest=PurchaseE2ETest
-
-# Task 5 (Bonus Option A): ReqRes REST API Tests
-mvn test -Dtest=ReqResApiTest
 ```
 
 ### 4. Visual Headed Mode (Watch Browser Execution in Terminal)
@@ -174,6 +173,37 @@ set HEADLESS=false && mvn test -Dtest=PurchaseE2ETest
 
 # Linux / macOS
 HEADLESS=false mvn test -Dtest=PurchaseE2ETest
+```
+
+---
+
+## 📮 API Testing with Postman (Task 5 - Bonus Option A)
+
+The automated REST API test suite targets `https://reqres.in` and is located in the [`postman/`](./postman) directory:
+- **Collection**: `postman/ReqRes_API_Tests.postman_collection.json`
+- **Environment**: `postman/ReqRes_API_Environment.postman_environment.json`
+
+### Endpoints Covered:
+1. `GET /api/users?page=2` — Verify paginated user list (Status 200, schema & array assertions)
+2. `POST /api/users` — Create new user (Status 201, verify returned name, job, id, and timestamp)
+3. `PUT /api/users/2` — Update user details (Status 200, verify updated job and timestamp)
+4. `DELETE /api/users/2` — Delete user (Status 204 No Content)
+5. `GET /api/users/23` — Negative test: User not found (Status 404, error response validation)
+
+### How to Run in Postman (Desktop App)
+1. Open the **Postman** desktop application.
+2. Click the **Import** button in the top-left corner.
+3. Drag and drop or browse to select both:
+   - `postman/ReqRes_API_Tests.postman_collection.json`
+   - `postman/ReqRes_API_Environment.postman_environment.json`
+4. In the top-right environment selector, choose **ReqRes Environment**.
+5. Select the **ReqRes API Tests** collection from the sidebar, click the **Run** (or `...` ➔ `Run collection`) button.
+6. Click **Run ReqRes API Tests** — all 5 test requests and assertions will run and pass!
+
+### How to Run via Newman CLI (Optional)
+If Newman (Postman CLI runner) is installed:
+```bash
+npx newman run postman/ReqRes_API_Tests.postman_collection.json -e postman/ReqRes_API_Environment.postman_environment.json
 ```
 
 ---
@@ -196,7 +226,7 @@ HEADLESS=false mvn test -Dtest=PurchaseE2ETest
 | **Task 2: Login** | Positive & Negative | Valid credentials (`standard_user`), invalid credentials, empty username validation, empty password validation, locked-out user (`locked_out_user`), sidebar menu logout & redirect |
 | **Task 3: E2E Purchase** | Complete Flow | Multi-item cart additions, badge counter dynamic update, cart item inspection, customer checkout form input, tax (8%) and subtotal calculation verification, order completion & Pony Express dispatch banner |
 | **Task 4: Bug Hunt** | Exploration | 5 documented defects in [`BUG_REPORT.md`](./BUG_REPORT.md) found using `problem_user`, complete with Bug IDs, Severity, Priority, Steps to Reproduce, Actual vs. Expected results, and embedded screenshot evidence |
-| **Task 5: Bonus A** | REST API | REST Assured tests against `https://reqres.in`: GET paginated users, POST create user, PUT update user, DELETE user (204), and GET 404 user not found |
+| **Task 5: Bonus A** | REST API | Postman collection & environment for `https://reqres.in`: GET paginated users, POST create user, PUT update user, DELETE user (204), and GET 404 user not found |
 | **Task 5: Bonus B** | CI Pipeline | Automated GitHub Actions workflow (`.github/workflows/test.yml`) executing on push/PR with JDK 17, headless Chrome, Maven TestNG runner, and Surefire report artifact archiving |
 
 ---
@@ -204,8 +234,8 @@ HEADLESS=false mvn test -Dtest=PurchaseE2ETest
 ## 🎁 Bonus Work Details
 
 Both bonus options were implemented:
-1. **Option A — REST API Automation (`src/test/java/com/saucedemo/tests/ReqResApiTest.java`)**:
-   Implemented with **REST Assured 5.5** and Hamcrest matchers, validating status codes (200, 201, 204, 404), JSON schema attributes, and response body payloads against `https://reqres.in`.
+1. **Option A — REST API Automation (`postman/ReqRes_API_Tests.postman_collection.json`)**:
+   Implemented with a modular **Postman Collection & Environment**, validating status codes (200, 201, 204, 404), JSON schema attributes, and response body payloads against `https://reqres.in` using automated JavaScript test assertions.
 2. **Option B — GitHub Actions CI (`.github/workflows/test.yml`)**:
    Automated workflow running on Ubuntu, configuring JDK 17, headless Google Chrome, executing `mvn clean test`, and uploading Surefire test reports as downloadable build artifacts.
 

@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "reqres-api-tests-collection",
+		"name": "ReqRes API Tests",
+		"description": "Task 5: REST API tests against the public ReqRes API (https://reqres.in).\nContains GET, POST, PUT, DELETE operations with response assertions.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://reqres.in"
+		}
+	],
+	"item": [
+		{
+			"name": "GET - Retrieve Paginated User List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users?page=2",
+					"host": ["{{base_url}}"],
+					"path": ["api", "users"],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				},
+				"description": "GET /api/users?page=2 - Retrieve paginated user list"
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Status code is 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Response is JSON', function () {",
+							"    pm.response.to.have.header('Content-Type', /json/);",
+							"});",
+							"",
+							"pm.test('Page number equals 2', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.page).to.eql(2);",
+							"});",
+							"",
+							"pm.test('per_page is greater than 0', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.per_page).to.be.above(0);",
+							"});",
+							"",
+							"pm.test('total is greater than 0', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.total).to.be.above(0);",
+							"});",
+							"",
+							"pm.test('data array is not empty', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data).to.be.an('array').that.is.not.empty;",
+							"});",
+							"",
+							"pm.test('First user has id, email, and first_name', function () {",
+							"    var user = pm.response.json().data[0];",
+							"    pm.expect(user.id).to.not.be.null;",
+							"    pm.expect(user.email).to.not.be.null;",
+							"    pm.expect(user.first_name).to.not.be.null;",
+							"});",
+							"",
+							"pm.test('Support URL is present', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.support.url).to.not.be.null;",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "POST - Create a New User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"morpheus\",\n    \"job\": \"leader\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/users",
+					"host": ["{{base_url}}"],
+					"path": ["api", "users"]
+				},
+				"description": "POST /api/users - Create a new user record"
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Status code is 201', function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test('Response is JSON', function () {",
+							"    pm.response.to.have.header('Content-Type', /json/);",
+							"});",
+							"",
+							"pm.test('Name matches morpheus', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql('morpheus');",
+							"});",
+							"",
+							"pm.test('Job matches leader', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.job).to.eql('leader');",
+							"});",
+							"",
+							"pm.test('id is returned', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.not.be.null;",
+							"});",
+							"",
+							"pm.test('createdAt is returned', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.createdAt).to.not.be.null;",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "GET - Single User Not Found (404)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users/23",
+					"host": ["{{base_url}}"],
+					"path": ["api", "users", "23"]
+				},
+				"description": "GET /api/users/23 - Single user not found returns 404"
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Status code is 404', function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PUT - Update User Details",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"morpheus\",\n    \"job\": \"zion resident\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/users/2",
+					"host": ["{{base_url}}"],
+					"path": ["api", "users", "2"]
+				},
+				"description": "PUT /api/users/2 - Update user details"
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Status code is 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Name matches morpheus', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql('morpheus');",
+							"});",
+							"",
+							"pm.test('Job matches zion resident', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.job).to.eql('zion resident');",
+							"});",
+							"",
+							"pm.test('updatedAt is returned', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.updatedAt).to.not.be.null;",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "DELETE - Delete User Record",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users/2",
+					"host": ["{{base_url}}"],
+					"path": ["api", "users", "2"]
+				},
+				"description": "DELETE /api/users/2 - Delete user record returns 204"
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Status code is 204', function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						]
+					}
+				}
+			]
+		}
+	]
+}

@@ -23,6 +23,12 @@ public class CheckoutStepOnePage extends BasePage {
 
     // ── Actions ─────────────────────────────────────────────────────
 
+    /** Wait for the checkout step one page to be fully loaded. */
+    public void waitForPageLoaded() {
+        waitForUrlContains("checkout-step-one.html");
+        findVisible(firstNameInput);
+    }
+
     public void enterFirstName(String name) {
         typeText(firstNameInput, name);
     }

@@ -19,10 +19,4 @@
         </classes>
     </test>
 
-    <test name="Task 5 - ReqRes API Tests">
-        <classes>
-            <class name="com.saucedemo.tests.ReqResApiTest"/>
-        </classes>
-    </test>
-
 </suite>

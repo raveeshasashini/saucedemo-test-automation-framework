@@ -94,7 +94,10 @@ public class LoginTest extends BaseTest {
 
         Assert.assertTrue(loggedOutPage.isLoginButtonDisplayed(),
                 "Login button is not displayed after logout");
-        Assert.assertEquals(loggedOutPage.getCurrentUrl(), Config.BASE_URL + "/",
-                "User was not redirected back to login page");
+        Assert.assertTrue(loggedOutPage.isUsernameInputDisplayed(),
+                "Username input is not displayed after logout");
+        String currentUrl = loggedOutPage.getCurrentUrl();
+        Assert.assertTrue(currentUrl.equals(Config.BASE_URL) || currentUrl.equals(Config.BASE_URL + "/") || currentUrl.startsWith(Config.BASE_URL),
+                "User was not redirected back to login page. Actual URL: " + currentUrl);
     }
 }

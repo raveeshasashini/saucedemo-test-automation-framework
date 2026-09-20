@@ -23,6 +23,13 @@ public class LoginPage extends BasePage {
     // ── Navigation ──────────────────────────────────────────────────
     public void open() {
         driver.get(Config.BASE_URL);
+        waitForPageLoaded();
+    }
+
+    /** Wait for login page elements to be visible. */
+    public void waitForPageLoaded() {
+        findVisible(usernameInput);
+        findVisible(loginButton);
     }
 
     // ── Actions ─────────────────────────────────────────────────────

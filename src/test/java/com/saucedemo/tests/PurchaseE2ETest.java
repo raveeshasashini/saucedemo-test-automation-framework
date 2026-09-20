@@ -35,6 +35,7 @@ public class PurchaseE2ETest extends BaseTest {
 
         // 3. Navigate to Cart
         CartPage cartPage = productsPage.goToCart();
+        cartPage.waitForPageLoaded();
         Assert.assertEquals(cartPage.getCartItemCount(), 2,
                 "Cart does not contain exactly 2 items");
 
@@ -46,6 +47,7 @@ public class PurchaseE2ETest extends BaseTest {
 
         // 4. Proceed to Checkout Step One
         CheckoutStepOnePage stepOne = cartPage.clickCheckout();
+        stepOne.waitForPageLoaded();
         Assert.assertTrue(stepOne.getCurrentUrl().contains("checkout-step-one.html"),
                 "Did not navigate to checkout step one");
 
@@ -56,6 +58,7 @@ public class PurchaseE2ETest extends BaseTest {
                 TestData.CHECKOUT_POSTAL_CODE
         );
         CheckoutStepTwoPage stepTwo = stepOne.clickContinue();
+        stepTwo.waitForPageLoaded();
         Assert.assertTrue(stepTwo.getCurrentUrl().contains("checkout-step-two.html"),
                 "Did not navigate to checkout step two overview");
 
@@ -75,6 +78,7 @@ public class PurchaseE2ETest extends BaseTest {
 
         // 7. Finish Order
         CheckoutCompletePage completePage = stepTwo.clickFinish();
+        completePage.waitForPageLoaded();
         Assert.assertTrue(completePage.getCurrentUrl().contains("checkout-complete.html"),
                 "Did not navigate to checkout complete page");
 
@@ -112,7 +116,9 @@ public class PurchaseE2ETest extends BaseTest {
 
         productsPage.addProductToCartByName(TestData.PRODUCT_1_NAME);
         CartPage cartPage = productsPage.goToCart();
+        cartPage.waitForPageLoaded();
         CheckoutStepOnePage stepOne = cartPage.clickCheckout();
+        stepOne.waitForPageLoaded();
 
         // Attempt continue with empty fields
         stepOne.clickContinue();

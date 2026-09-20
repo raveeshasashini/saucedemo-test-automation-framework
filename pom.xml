@@ -11,8 +11,9 @@
 
     <name>SauceDemo QA Automation</name>
     <description>
-        Automated E2E and REST API test suite for SauceDemo using
-        Selenium WebDriver, Java 17, TestNG, and REST Assured.
+        Automated E2E test suite for SauceDemo using
+        Selenium WebDriver, Java 17, and TestNG.
+        API testing is handled via Postman collections.
     </description>
 
     <properties>
@@ -23,8 +24,7 @@
         <!-- Dependency versions -->
         <selenium.version>4.29.0</selenium.version>
         <testng.version>7.10.2</testng.version>
-        <rest-assured.version>5.5.0</rest-assured.version>
-        <slf4j.version>2.0.16</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
     </properties>
 
     <dependencies>
@@ -40,30 +40,6 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- REST Assured for API testing -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Hamcrest matchers -->
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <version>3.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Jackson Databind for REST Assured JSON serialization -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.18.2</version>
             <scope>test</scope>
         </dependency>
 

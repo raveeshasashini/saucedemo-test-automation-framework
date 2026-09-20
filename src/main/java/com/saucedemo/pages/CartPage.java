@@ -26,9 +26,15 @@ public class CartPage extends BasePage {
 
     // ── Actions ─────────────────────────────────────────────────────
 
+    /** Wait for the cart page to be fully loaded. */
+    public void waitForPageLoaded() {
+        waitForUrlContains("cart.html");
+        findVisible(checkoutButton);
+    }
+
     /** Return the number of items in the cart list. */
     public int getCartItemCount() {
-        return findAll(cartItems).size();
+        return findAllVisible(cartItems).size();
     }
 
     /** Return a list of product names shown in the cart. */

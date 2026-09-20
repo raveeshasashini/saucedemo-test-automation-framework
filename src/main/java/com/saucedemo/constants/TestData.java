@@ -34,9 +34,9 @@ public final class TestData {
             "Epic sadface: Sorry, this user has been locked out.";
 
     // ── Checkout Data ───────────────────────────────────────────────
-    public static final String CHECKOUT_FIRST_NAME = "John";
-    public static final String CHECKOUT_LAST_NAME = "Doe";
-    public static final String CHECKOUT_POSTAL_CODE = "10001";
+    public static final String CHECKOUT_FIRST_NAME = "Kasun";
+    public static final String CHECKOUT_LAST_NAME = "Perera";
+    public static final String CHECKOUT_POSTAL_CODE = "10100";
 
     // ── Product Data ────────────────────────────────────────────────
     public static final String PRODUCT_1_NAME = "Sauce Labs Backpack";

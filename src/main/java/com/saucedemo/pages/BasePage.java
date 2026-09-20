@@ -44,14 +44,50 @@ public abstract class BasePage {
         return driver.findElements(locator);
     }
 
-    /** Wait for an element to be clickable, then click it. */
+    /** Wait for at least one element to be visible, then return all matching elements. */
+    protected List<WebElement> findAllVisible(By locator) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        return driver.findElements(locator);
+    }
+
+    /** Wait until the current URL contains the given fragment. */
+    protected void waitForUrlContains(String urlFragment) {
+        wait.until(ExpectedConditions.urlContains(urlFragment));
+    }
+
+    /** Wait for an element to be clickable, scroll into view, and click it. */
     protected void click(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        try {
+            ((org.openqa.selenium.JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", element);
+            element.click();
+        } catch (Exception e) {
+            ((org.openqa.selenium.JavascriptExecutor) driver)
+                    .executeScript("arguments[0].click();", element);
+        }
+    }
+
+    /** Wait for an element to be clickable, scroll into view, and click it. */
+    protected void click(WebElement element) {
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        try {
+            ((org.openqa.selenium.JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", element);
+            element.click();
+        } catch (Exception e) {
+            ((org.openqa.selenium.JavascriptExecutor) driver)
+                    .executeScript("arguments[0].click();", element);
+        }
     }
 
     /** Clear a field and type into it. */
     protected void typeText(By locator, String text) {
         WebElement element = findVisible(locator);
+        try {
+            ((org.openqa.selenium.JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", element);
+        } catch (Exception ignored) {}
         element.clear();
         element.sendKeys(text);
     }

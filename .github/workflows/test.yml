@@ -8,7 +8,7 @@ on:
 
 jobs:
   automation-tests:
-    name: Run Selenium E2E & REST Assured Tests
+    name: Run Selenium E2E Tests
     runs-on: ubuntu-latest
 
     steps:

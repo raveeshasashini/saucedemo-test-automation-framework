@@ -85,10 +85,16 @@ public class ProductsPage extends BasePage {
     /** Open the side menu and click Logout. */
     public LoginPage logout() {
         click(burgerMenu);
-        // Wait for the sidebar animation to complete
-        wait.until(ExpectedConditions.elementToBeClickable(logoutLink));
-        click(logoutLink);
-        return new LoginPage(driver);
+        // Wait for the sidebar animation to complete and link to be clickable
+        WebElement logout = wait.until(ExpectedConditions.elementToBeClickable(logoutLink));
+        try {
+            logout.click();
+        } catch (Exception e) {
+            ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", logout);
+        }
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.waitForPageLoaded();
+        return loginPage;
     }
 
     /** Return a list of every product name on the page. */

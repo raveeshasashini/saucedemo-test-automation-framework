@@ -110,9 +110,9 @@ Add alternative products that function (e.g. Sauce Labs Backpack).
 1. Log in as `problem_user`
 2. Add "Sauce Labs Backpack" to the shopping cart
 3. Click the cart icon and click **"Checkout"**
-4. Enter First Name (e.g. `John`)
-5. Click the **"Last Name"** input field (`#last-name`) and attempt to type text (e.g. `Doe`)
-6. Enter Postal Code (e.g. `10001`)
+4. Enter First Name (e.g. `Kasun`)
+5. Click the **"Last Name"** input field (`#last-name`) and attempt to type text (e.g. `Perera`)
+6. Enter Postal Code (e.g. `10100`)
 7. Click **"Continue"**
 
 #### Expected Result:

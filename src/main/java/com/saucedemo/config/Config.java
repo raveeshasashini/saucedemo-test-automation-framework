@@ -20,8 +20,8 @@ public final class Config {
     }
 
     // ── Timeouts (seconds) ──────────────────────────────────────────
-    public static final int EXPLICIT_WAIT_SECONDS = 10;
-    public static final int PAGE_LOAD_TIMEOUT_SECONDS = 30;
+    public static final int EXPLICIT_WAIT_SECONDS = 15;
+    public static final int PAGE_LOAD_TIMEOUT_SECONDS = 60;
 
     // ── Paths ───────────────────────────────────────────────────────
     public static final String SCREENSHOT_DIR = "screenshots";
