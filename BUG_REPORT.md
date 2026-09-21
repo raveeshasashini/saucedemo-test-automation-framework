@@ -84,10 +84,10 @@ None. The client-side asset reference points to the fallback image.
 - The cart badge increments by 1
 
 #### Actual Result:
-Clicking "Add to cart" fails silently for specific items. The button does not toggle to "Remove", and the cart badge count remains unchanged at 0.
+Clicking "Add to cart" fails for specific items such as the Sauce Labs Fleece Jacket and Sauce Labs Bolt T-Shirt. The buttons fail to toggle to "Remove", and the inventory-to-cart state desynchronizes (e.g., cart badge displays 3 while buttons remain stuck on "Add to cart"). Users cannot reliably manage these products.
 
 #### Workaround:
-Add alternative products that function (e.g. Sauce Labs Backpack).
+Only add items whose toggle state functions properly (e.g., Sauce Labs Backpack).
 
 #### Evidence / Screenshot:
 ![BUG-02 Add to Cart Failure](screenshots/problem_user_bugs/BUG-02_add_to_cart_failure.png)
